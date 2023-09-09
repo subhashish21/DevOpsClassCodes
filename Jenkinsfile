@@ -1,13 +1,11 @@
 pipeline{
     tools{
+        
         maven 'Mymaven'
     }
-  stages{
-       stage('Clonerepo'){
-           steps git 'https://github.com/subhashish21/DevOpsClassCodes.git'
-                          }
-            }
     
+    agent none
+    stages{
             stage('Compile'){
                 agent any
                 steps{
@@ -20,25 +18,26 @@ pipeline{
                     sh 'mvn pmd:pmd'
                 }
 
-                
-            }
+                }
+            
             stage('UnitTest'){
-                
+                agent {label 'slave_win'}
                 steps{
-                   
+                    
                     sh 'mvn test'
                 }
 
                 }
                 
-           
+            
             stage('MetricCheck'){
                 agent any
                 steps{
-                    sh 'mvn verify'
+                    sh 'verify'
                 }
+
                 }
-            
+            }
             stage('Package'){
                 agent any
                 steps{
@@ -47,4 +46,3 @@ pipeline{
             }
     }
 }
-
