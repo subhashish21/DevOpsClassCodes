@@ -1,54 +1,43 @@
 pipeline{
-    tools{
-        jdk 'myjava'
+ agent any
+
+    tools {
         maven 'mymaven'
     }
+ stages{
+    stage('Clonerepo'){
+    step{
+        git 'https://github.com/subhashish21/DevOpsClassCodes.git'
+    }
+        }
+
     
-    agent none
+   
     stages{
             stage('Compile'){
-                agent any
                 steps{
                     sh 'mvn compile'
                 }
             }
             stage('CodeReview'){
-                agent any
                 steps{
                     sh 'mvn pmd:pmd'
                 }
-                post{
-                    always{
-                        pmd pattern: 'target/pmd.xml'
-                    }
-                }
+
             }
             stage('UnitTest'){
-                agent {label 'slave_win'}
                 steps{
-                    git 'https://github.com/devops-trainer/DevOpsClassCodes.git'
-                    bat 'mvn test'
-                }
-                post{
-                    always{
-                        junit 'target/surefire-reports/*.xml'
-                    }
+                        sh 'mvn test'
                 }
                 
             }
             stage('MetricCheck'){
-                agent any
                 steps{
-                    sh 'mvn cobertura:cobertura -Dcobertura.report.format=xml'
-                }
-                post{
-                    always{
-                        cobertura coberturaReportFile: 'target/site/cobertura/coverage.xml'
-                    }
+                    sh 'mvn verify'
+                
                 }
             }
-            stage('Package'){
-                agent any
+            stage('Package'{
                 steps{
                     sh 'mvn package'
                 }
