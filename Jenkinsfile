@@ -8,8 +8,6 @@ pipeline{
   }
  }
     
-    agent none
-    stages{
             stage('Compile'){
                 agent any
                 steps{
