@@ -2,11 +2,11 @@ pipeline{
     tools{
         maven 'Mymaven'
     }
- stages{
-  stage('Clonerepo'){
-   steps git 'https://github.com/subhashish21/DevOpsClassCodes.git'
-  }
- }
+  stages{
+       stage('Clonerepo'){
+           steps git 'https://github.com/subhashish21/DevOpsClassCodes.git'
+                          }
+            }
     
             stage('Compile'){
                 agent any
