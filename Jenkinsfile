@@ -17,34 +17,17 @@ pipeline{
                 steps{
                     sh 'mvn pmd:pmd'
                 }
-                post{
-                    always{
-                        pmd pattern: 'target/pmd.xml'
-                    }
-                }
             }
             stage('UnitTest'){
-                agent {label 'slave_win'}
                 steps{
-                    git 'https://github.com/devops-trainer/DevOpsClassCodes.git'
+                    git 'https://github.com/subhashish21/DevOpsClassCodes.git'
                     bat 'mvn test'
                 }
-                post{
-                    always{
-                        junit 'target/surefire-reports/*.xml'
-                    }
-                }
-                
             }
             stage('MetricCheck'){
                 agent any
                 steps{
                     sh 'mvn cobertura:cobertura -Dcobertura.report.format=xml'
-                }
-                post{
-                    always{
-                        cobertura coberturaReportFile: 'target/site/cobertura/coverage.xml'
-                    }
                 }
             }
             stage('Package'){
