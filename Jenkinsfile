@@ -1,7 +1,7 @@
 pipeline{
     tools{
-        
-        maven 'Mymaven'
+        jdk 'myjava'
+        maven 'mymaven'
     }
     
     agent none
@@ -17,25 +17,34 @@ pipeline{
                 steps{
                     sh 'mvn pmd:pmd'
                 }
-
+                post{
+                    always{
+                        pmd pattern: 'target/pmd.xml'
+                    }
                 }
-            
+            }
             stage('UnitTest'){
                 agent {label 'slave_win'}
                 steps{
-                    
-                    sh 'mvn test'
+                    git 'https://github.com/devops-trainer/DevOpsClassCodes.git'
+                    bat 'mvn test'
                 }
-
+                post{
+                    always{
+                        junit 'target/surefire-reports/*.xml'
+                    }
                 }
                 
-            
+            }
             stage('MetricCheck'){
                 agent any
                 steps{
-                    sh 'verify'
+                    sh 'mvn cobertura:cobertura -Dcobertura.report.format=xml'
                 }
-
+                post{
+                    always{
+                        cobertura coberturaReportFile: 'target/site/cobertura/coverage.xml'
+                    }
                 }
             }
             stage('Package'){
