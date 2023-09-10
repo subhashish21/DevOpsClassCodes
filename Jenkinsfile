@@ -17,7 +17,7 @@ node{
  }
  }
  stage ('Email') {
- emailext attachLog: true, body: 'The status of the build can be obtained
+emailext attachLog: true, body: 'The status of the build can be obtained
 from the build log attached', subject: 'The build update is ', to: 'subhashishrajbehera2001@gmailcom'
 }
 stage('Deployment') {
