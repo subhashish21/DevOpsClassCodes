@@ -16,7 +16,7 @@ node{
  sh 'mvn -B -V -U -e clean package'
  }
  }
- stage ('Email') {
+stage ('Email') {
 emailext attachLog: true, body: 'The status of the build can be obtained
 from the build log attached', subject: 'The build update is ', to: 'subhashishrajbehera2001@gmailcom'
 }
@@ -38,7 +38,6 @@ false, keepAll: false, reportDir: '', reportFiles: 'index.html', reportName:
  stage('clean up') {
  echo "cleaning up the workspace"
  cleanWs()
-Module 4 – Continuous Integration With Jenkins
  }
 }// node
 } // try end
